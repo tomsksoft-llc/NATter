@@ -1,0 +1,19 @@
+# Example of NATter test configuration .toml file for integration tests.
+
+# Enable config integration test.
+CONFIG_TEST_ENABLE=true
+
+# For config test, dont edit.
+CONFIG_TEST_STRING='hello'
+CONFIG_TEST_BOOL=true
+CONFIG_TEST_STRING_SLICE=['value1', 'value2']
+
+# Enable Kafka integration test.
+KAFKA_TEST_ENABLE=true
+
+# Kafka version.
+# The version has format of four numbers delimited by dot.
+KAFKA_VERSION='2.8.0.0'
+
+# Kafka Cluster adresses.
+KAFKA_SERVERS=['127.0.0.1:9092']

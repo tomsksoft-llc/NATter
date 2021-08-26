@@ -1,0 +1,83 @@
+# Example of NATter Service configuration .toml file.
+# Please refer to the documentation for the full information.
+
+# Describes logs options.
+[LOG]
+# Logger will write anything that is on specified level or above. 
+# Possible Values: trace, debug, info, error, fatal, panic
+LOGGER_LEVEL='debug'
+# Enables or disables output logs into stderr and stdout streams.
+# Default false
+STREAMLOG_ENABLE=false
+# Enables or disables output logs into file.
+# Default false
+FILELOG_ENABLE=true
+# Path for service logs. Could be abosulute or relative.
+FILELOG_PATH='logs/logs.log'
+# Enables or disables output logs into syslog.
+# Default false
+SYSLOG_ENABLE=false
+# Syslog service host.
+SYSLOG_HOST='localhost:514'
+
+# Describes Message Broker options.
+[MESSAGE_BROKER]
+# Message Broker to use for messaging.
+# Possible Values: nats, kafka
+BROKER='nats'
+# NATS Cluster addresses for nats Broker.
+# The url can contain username/password semantics. e.g. nats://login:pass@localhost:4222
+NATS_SERVERS=['nats://localhost:4222', 'nats://localhost:4223']
+# NATS token for access to NATS Cluster for nats Broker.
+NATS_TOKEN='accesstoken'
+# Kafka version for kafka Broker.
+# The version has format of four numbers delimited by dot.
+KAFKA_VERSION='2.8.0.0'
+# Kafka Cluster addresses for kafka Broker.
+KAFKA_SERVERS=['localhost:9092', 'localhost:9093']
+# Broker queue group name.
+SERVICE_GROUP='natter'
+# Broker client name.
+SERVICE_NAME='natter'
+
+[HTTP]
+# Endpoint and API host.
+HOST='127.0.0.1'
+# Endpoint and API port.
+PORT='1000'
+
+# Describes routing options.
+[[ROUTES]]
+# Custom routing mode of format 'source-recipient-direction'.
+MODE='broker-http-oneway'
+# Message Broker connection topic.
+TOPIC='topic0'
+# Endpoint to send requests to for HTTP connection.
+ENDPOINT='http://localhost:8080/path0'
+# Describes route batching options.
+[ROUTES.BATCHING]
+# Timeout in seconds to release batch.
+# Default 0 (no timeout)
+TIMEOUT=30
+# Max number of messages to release batch.
+# Default 0
+CAPACITY=5
+
+[[ROUTES]]
+MODE='broker-http-twoway'
+TOPIC='topic1'
+ENDPOINT='http://localhost:8080/path1'
+
+[[ROUTES]]
+MODE='http-broker-oneway'
+TOPIC='topic2'
+# URI to receive requests from for HTTP connection.
+URI='/path2'
+
+[[ROUTES]]
+MODE='http-broker-twoway'
+# Flag that defines whether 'twoway' route for HTTP source is asynchronous.
+# Default false
+ASYNC=false
+TOPIC='topic3'
+URI='/path3'

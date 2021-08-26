@@ -1,0 +1,64 @@
+openapi: 3.0.0
+info:
+  title: NATter HTTP API
+  version: 1.0.0
+  
+paths:
+  /i/routes:
+    get:
+      summary: Get Route array
+      tags:
+        - Route
+      responses:
+        '200':
+          description: Route array
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Route'
+              example:
+                - mode: "broker-http-twoway"
+                  topic: "example.topic"
+                  endpoint: "example-endpoint.com"
+                - mode: "http-broker-twoway"
+                  topic: "another.topic"
+                  uri: "/example/path"
+                - mode: "http-broker-twoway"
+                  async: true
+                  topic: "another.topic"
+                  endpoint: "another-endpoint.com"
+                  uri: "/another/path"
+        '422':
+          description: Unprocessable Entity
+        '500':
+          description: Internal Server Error
+components:
+  schemas:
+    Route:
+      type: object
+      required:
+        - mode
+      properties:
+        mode:
+          type: string
+          description: Custom route mode of format 'receiver-sender-direction'
+        async:
+          type: boolean
+          description: Whether two-way HTTP route is asynchronous
+        topic:
+          type: string
+          description: Message broker topic to send messages to or receive ones from
+        endpoint:
+          type: string
+          description: HTTP endpoint to send requests to
+        uri:
+          type: string
+          description: URI to receive requests from
+      example:
+        mode: "http-broker-twoway"
+        async: true
+        topic: "example.topic"
+        endpoint: "example-endpoint.com"
+        uri: "/example/path"
